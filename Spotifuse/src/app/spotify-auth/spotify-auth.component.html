@@ -1,0 +1,35 @@
+<div class="container">
+<mat-grid-list [cols]="13" [rowHeight]="'fit'"> 
+<mat-grid-tile [colspan]="5"></mat-grid-tile>
+<mat-grid-tile  [colspan]="3">
+
+  <div *ngIf="!isAuthed" class="card-like">
+    <p class="mat-title">
+    Sign-in to Spotify
+  </p>
+  <p>
+    Please click the login button below and login through Spotify's official login. You will be redirected back to this site once you are done.
+  </p>
+  <p>
+  <button mat-flat-button color="accent" (click)="login()"> Login </button>
+</p>
+</div>
+
+<div *ngIf="isAuthed" class="card-like">
+  <p class="mat-title">
+  Logged in Successfully!
+</p>
+<p>
+  Please click the next button below to continue.
+</p>
+<p>
+<button mat-flat-button color="accent" matStepperNext> Next! </button>
+</p>
+</div>
+   
+          
+       
+</mat-grid-tile>
+
+</mat-grid-list>
+</div>

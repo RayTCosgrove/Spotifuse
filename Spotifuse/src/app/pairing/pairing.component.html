@@ -1,0 +1,71 @@
+<div class="container">
+  <mat-grid-list [cols]="13" [rowHeight]="'fit'">
+    <mat-grid-tile [colspan]="5"></mat-grid-tile>
+    <mat-grid-tile [colspan]="3">
+
+      <div class="card-like">
+
+        <div *ngIf="!newPin && !existingPin">
+          <p class="mat-title">
+            Pair with your friend!
+          </p>
+          <p>
+            We use a pin to pair you with your friend - think Kahoot style! Please select an option below.
+          </p>
+          <p>
+            <button mat-flat-button color="accent" (click)="newPin=true">Generate new pin</button>
+            <button mat-flat-button color="accent" (click)="existingPin=true">Already have a pin</button>
+          </p>
+        </div>
+
+        <div *ngIf="newPin">
+          <h1>
+            {{pin}}
+          </h1>
+          <p class="mat-subheading-2">
+            Share the above pin with your friend! Once they join we'll continue the process!
+          </p>
+
+          <div class="spinner">
+            <div class="bounce1"></div>
+            <div class="bounce2"></div>
+            <div class="bounce3"></div>
+          </div>
+
+          <p>
+            <button mat-flat-button color="accent" (click)="newPin=false">Back!</button>  
+
+          </p>
+
+        </div>
+
+        <div *ngIf="existingPin">
+          <p class="mat-title">
+            Enter your friend's pin below!
+          </p>
+
+          
+            <mat-form-field appearance="outline">
+              <mat-label>Enter pin here!</mat-label>
+              <input matInput placeholder="Ex. 0000" type="number" min="0" max="9999">
+              <mat-icon matSuffix>vpn_key</mat-icon>
+            </mat-form-field>
+          
+          <p>
+            <button mat-flat-button color="accent" (click)="existingPin=false">Back!</button>  
+            <button mat-flat-button color="accent" >Pair!</button>
+          </p>
+
+        </div>
+
+
+      </div>
+
+
+
+
+
+    </mat-grid-tile>
+
+  </mat-grid-list>
+</div>

@@ -1,0 +1,21 @@
+
+<mat-horizontal-stepper [linear]="true" #stepper>
+  <mat-step [completed]="isAuthed">
+
+    <ng-template matStepLabel>Sign-in to Spotify!</ng-template>
+    <app-spotify-auth ></app-spotify-auth>
+   
+  </mat-step>
+  <mat-step [completed]="false">
+
+      <ng-template matStepLabel>Pair with your friend!</ng-template>
+     <app-pairing></app-pairing>
+
+  </mat-step>
+  <mat-step>
+    
+
+    <ng-template matStepLabel>Done</ng-template>
+    
+  </mat-step>
+</mat-horizontal-stepper>

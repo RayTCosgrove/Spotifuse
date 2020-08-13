@@ -1,0 +1,14 @@
+@import './assets/mytheme.scss';
+
+
+svg{
+    position: fixed;
+    top:0;
+    left:0;
+    right: inherit;
+    bottom: inherit;
+    z-index: -1000;
+    
+}
+html, body { height: 100%; overflow: hidden; }
+body { margin: 0; margin-top: 240px; font-family: Roboto, "Helvetica Neue", sans-serif; }
