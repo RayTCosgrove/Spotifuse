@@ -13,7 +13,7 @@
             We use a pin to pair you with your friend - think Kahoot style! Please select an option below.
           </p>
           <p>
-            <button mat-flat-button color="accent" (click)="newPin=true">Generate new pin</button>
+            <button mat-flat-button color="accent" (click)="generateNewPin()">Generate new pin</button>
             <button mat-flat-button color="accent" (click)="existingPin=true">Already have a pin</button>
           </p>
         </div>
@@ -33,7 +33,7 @@
           </div>
 
           <p>
-            <button mat-flat-button color="accent" (click)="newPin=false">Back!</button>  
+            <button mat-flat-button color="accent" (click)="newPin=false">Back!</button>
 
           </p>
 
@@ -44,15 +44,15 @@
             Enter your friend's pin below!
           </p>
 
-          
+
             <mat-form-field appearance="outline">
               <mat-label>Enter pin here!</mat-label>
               <input matInput placeholder="Ex. 0000" type="number" min="0" max="9999">
               <mat-icon matSuffix>vpn_key</mat-icon>
             </mat-form-field>
-          
+
           <p>
-            <button mat-flat-button color="accent" (click)="existingPin=false">Back!</button>  
+            <button mat-flat-button color="accent" (click)="existingPin=false">Back!</button>
             <button mat-flat-button color="accent" >Pair!</button>
           </p>
 

@@ -15,6 +15,7 @@ import {MatGridListModule} from '@angular/material/grid-list';
 import { HttpClientModule } from '@angular/common/http';
 import {SpotifyAuthService} from './spotify-auth/spotify-auth.service';
 import { PairingComponent } from './pairing/pairing.component'
+import { PairingService } from './pairing/pairing.service'
 import {MatIconModule} from '@angular/material/icon';
 
 
@@ -38,9 +39,9 @@ import {MatIconModule} from '@angular/material/icon';
     MatGridListModule,
     HttpClientModule,
     MatIconModule
-    
+
   ],
-  providers: [SpotifyAuthService],
+  providers: [SpotifyAuthService, PairingService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

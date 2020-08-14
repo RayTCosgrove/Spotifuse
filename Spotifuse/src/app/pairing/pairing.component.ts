@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { PairingService } from './pairing.service'
 
 
 
@@ -13,9 +14,16 @@ export class PairingComponent implements OnInit {
   public newPin = false;
   public existingPin = false;
 
-  constructor() { }
+  constructor(private pairing: PairingService) { }
 
   ngOnInit(): void {
+  }
+
+  generateNewPin(){
+    this.newPin=true;
+    this.pairing.generateNewPin().subscribe((response) => {
+      this.pin = response.pin;
+    })
   }
 
 }
