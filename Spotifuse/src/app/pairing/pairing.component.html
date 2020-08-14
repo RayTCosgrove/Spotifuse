@@ -47,13 +47,13 @@
 
             <mat-form-field appearance="outline">
               <mat-label>Enter pin here!</mat-label>
-              <input matInput placeholder="Ex. 0000" type="number" min="0" max="9999">
+              <input matInput [(ngModel)]="pinInput" placeholder="Ex. 0000" type="number" min="0" max="9999">
               <mat-icon matSuffix>vpn_key</mat-icon>
             </mat-form-field>
 
           <p>
             <button mat-flat-button color="accent" (click)="existingPin=false">Back!</button>
-            <button mat-flat-button color="accent" >Pair!</button>
+            <button mat-flat-button color="accent" (click)="useExistingPin()">Pair!</button>
           </p>
 
         </div>

@@ -3,6 +3,7 @@ import * as cors from 'cors';
 import * as express from 'express';
 import * as http from 'http'
 import * as WebSocket from 'ws';
+import {Message} from '..//Spotifuse/src/app/pairing/Message'
 
 const app = express();
 const server = http.createServer(app);
@@ -13,7 +14,7 @@ const wss = new WebSocket.Server({ server });
 const sessions = new Map();
 
 wss.on('connection', (ws: WebSocket) => {
-
+    console.log(ws)
     let pin = Math.floor(Math.random() * Math.floor(999999));
     while(sessions.has(pin)){
         pin = Math.floor(Math.random() * Math.floor(999999));
@@ -46,7 +47,7 @@ wss.on('connection', (ws: WebSocket) => {
         console.log(sessions)
     })
 
-    ws.send(JSON.stringify({pin}))
+    ws.send(JSON.stringify(new Message("Server",pin,false)))
 
 })
 
@@ -63,7 +64,9 @@ app.use(express.json());
 app.post('/existingPin', (request, response) => {
     
    
-
+    if(sessions.has(request.body.pin)){
+        sessions.get(request.body.pin).websocket.send(JSON.stringify(new Message("server",request.body.pin,true)))
+    }
     response.status(200).send({message:'getting existing pin'});
 
 
@@ -72,6 +75,6 @@ app.post('/existingPin', (request, response) => {
 
 
 
-
+console.log("testingsdfsf")
 
 server.listen(3000, () => console.log("Listening on port 3000"));
