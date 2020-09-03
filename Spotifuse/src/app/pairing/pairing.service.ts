@@ -27,10 +27,19 @@ export class PairingService {
 
   }
 
-  pairWithExistingPin(pin: number){
+  useExistingPin(pin: number){
 
-    return this.http.post('http://localhost:3000/existingPin',{pin},{})
+    this.socket$ = new WebSocketSubject('ws://localhost:3000/?pin='+pin);
 
+    return this.socket$;
+
+
+  }
+
+
+
+  sendTracks(pin: number, tracks: any){
+    return this.http.post('http://localhost:3000/sendTracks',{pin,tracks})
   }
 
 

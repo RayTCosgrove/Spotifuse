@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
+import {AuthObject} from './AuthObject'
 
 @Injectable({
   providedIn: 'root',
@@ -34,11 +35,11 @@ export class SpotifyAuthService {
     this.accessToken = accessToken;
 
     this.http
-      .get('https://api.spotify.com/v1/me/top/tracks', {
+      .get<AuthObject>('https://api.spotify.com/v1/me/top/tracks', {
         headers: new HttpHeaders({ Authorization: 'Bearer ' + accessToken }),
       })
       .subscribe((response) => {
-        this.tracks = response;
+        this.tracks = response.items;
         console.log(this.tracks)
       });
 
