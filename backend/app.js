@@ -11,33 +11,66 @@ var server = http.createServer(app);
 var wss = new WebSocket.Server({ server: server });
 //current sessions
 var sessions = new Map();
-wss.on('connection', function (ws, req) {
-    //let url = new URL(req.url,'http://localhost:3000');
-    console.log(ws);
+var clients = new Map();
+wss.on('connection', function (ws) {
     var pin = Math.floor(Math.random() * Math.floor(999999));
-    while (sessions.has(pin)) {
+    while (clients.has(pin)) {
         pin = Math.floor(Math.random() * Math.floor(999999));
     }
-    sessions.set(pin, {
-        websocket: ws,
-        user1Tracks: undefined,
-        user2Tracks: undefined
-    });
+    clients.set(pin, ws);
     ws.on('message', function (message) {
         var data = JSON.parse(message);
-        if (data.pin) {
-            console.log("pin is " + data.pin);
-            if (sessions.has(data.pin)) {
-                if (sessions.get(data.pin).user1Tracks == undefined) {
-                    console.log('we added tracks my dude');
-                    sessions.get(data.pin).user1Tracks = data.tracks;
-                    createNewPlaylist(data.pin);
+        if (data.type == "PAIR") {
+            console.log("PAIR");
+            var pin_1 = data.pin;
+            if (clients.has(pin_1)) {
+                if (!sessions.has(pin_1)) {
+                    //create new session here
+                    var session = {
+                        user1: clients.get(pin_1),
+                        user2: clients.get(data.sender),
+                        tracks: [],
+                        pin: pin_1,
+                        paired: true
+                    };
+                    console.log("creating session");
+                    sessions.set(pin_1, session);
+                    //let clients know they paired successfully
+                    clients.get(pin_1).send(JSON.stringify({ type: 'PAIR', pin: pin_1 }));
+                    if (pin_1 !== data.sender) {
+                        console.log("sending to first client");
+                        clients.get(data.sender).send(JSON.stringify({ type: 'PAIR', pin: pin_1 }));
+                    }
+                }
+                else {
+                    clients.get(data.sender).send(JSON.stringify({ message: 'This pin has already been used.' }));
                 }
             }
+            else {
+                clients.get(data.sender).send(JSON.stringify({ message: 'This pin does not exist.' }));
+            }
+        }
+        else if (data.type == "TRACKS") {
+            console.log("TRACKS");
+            console.log("session pin is " + data.pin);
+            var session = sessions.get(data.pin);
+            var newTracks = data.tracks;
+            //add newTracks to session
+            console.log(session);
+            session.tracks = session.tracks.concat(newTracks);
+            console.log("sessionlength " + session.tracks.length);
+            if (session.tracks.length >= 40) {
+                //send to client1
+                clients.get(session.pin).send(JSON.stringify({ type: 'TRACKS', tracks: session.tracks, pin: session.pin }));
+            }
+        }
+        else if (data.type == "PLAYLIST") {
+            console.log("PLAYLIST");
+            sessions.get(data.pin).user2.send(JSON.stringify({ type: 'PLAYLIST', playlist: data.playlist, pin: pin }));
         }
         ws.send(JSON.stringify({ message: "hello you sent: " + message }));
     });
-    ws.send(JSON.stringify(new Message_1.Message("Server", pin, false)));
+    ws.send(JSON.stringify({ type: "PIN", pin: pin }));
 });
 //enable cors
 app.use(cors());
