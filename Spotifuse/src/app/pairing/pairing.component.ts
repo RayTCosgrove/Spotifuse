@@ -16,8 +16,9 @@ export class PairingComponent implements OnInit {
   public pinInput;
   public newPin = false;
   public existingPin = false;
-  public paired = false;
+  public isPaired = false;
   private socket;
+  public errorMessage = "";
 
   constructor(private pairing: PairingService, private auth: SpotifyAuthService) { }
 
@@ -29,7 +30,11 @@ export class PairingComponent implements OnInit {
     this.socket = this.pairing.generateNewPin();
     this.socket.subscribe(
       (message) => {
-        if(message.type=="PIN"){
+        if(message.type == "ERROR"){
+          this.errorMessage = message.message;
+          this.pinInput = "";
+        }
+        else if(message.type=="PIN"){
           //save generated uid as pin
           this.pin = message.pin;
           console.log(this.pin)
@@ -37,9 +42,9 @@ export class PairingComponent implements OnInit {
         }
         else if(message.type=="PAIR"){
           //send TRACKS message with getTracks() list of tracks
-          this.paired = true;
-          console.log("sending back tracks bc paired")
-          this.socket.next({type: 'TRACKS',pin: this.pin, tracks: this.auth.getTracks()});
+          this.isPaired = true;
+          this.pairing.setPaired(true);
+                    this.socket.next({type: 'TRACKS',pin: this.pin, tracks: this.auth.getTracks()});
           console.log("sent tracks")
         }
         else if(message.type=="TRACKS"){
@@ -51,14 +56,14 @@ export class PairingComponent implements OnInit {
           for(let i = 0; i < tracks.length; i++){
 
             //add all songs to set so no duplicates
-            refinedTracks.add(tracks[i].id)
+            refinedTracks.add(tracks[i].uri)
             for(let j = 0; j < tracks.length; j++){
 
               //check all the artists of all the songs and look for mutuals
               for(let artist1 = 0; artist1 < tracks[i].artists.length; artist1++){
                 for(let artist2 = 0; artist2 < tracks[j].artists.length; artist2++){
                   if(tracks[i].artists[artist1].id==tracks[j].artists[artist2].id){
-                    artists.add(tracks[i].artists[artist1].id)
+                    artists.add(tracks[i].artists[artist1].uri)
                   }
                 }
               }
@@ -70,12 +75,12 @@ export class PairingComponent implements OnInit {
           console.log(Array.from(refinedTracks))
 
 
+          //create collab playlist
+          this.auth.createPlaylist(<string[]>Array.from(refinedTracks));
 
-          //merge track lists
+
 
           //get recs from spotify api
-
-          //create collav playlist with spotify api
 
           //add songs with spotify api
 
@@ -102,7 +107,12 @@ export class PairingComponent implements OnInit {
     this.socket = this.pairing.useExistingPin(this.pinInput);
     this.socket.subscribe(
       (message) => {
-        if(message.type=="PIN"){
+        if(message.type == "ERROR"){
+          this.errorMessage = message.message;
+          console.log(this.errorMessage)
+          this.pinInput = "";
+        }
+        else if(message.type=="PIN"){
           //save generated uid as pin
           let uid = message.pin;
           console.log(uid)
@@ -112,21 +122,14 @@ export class PairingComponent implements OnInit {
         }
         else if(message.type=="PAIR"){
           //send TRACKS message with getTracks() list of tracks
-          this.paired = true;
+          this.isPaired = true;
+          this.pairing.setPaired(true);
           console.log(this.auth.getTracks())
           this.socket.next({type: 'TRACKS',pin: this.pinInput, tracks: this.auth.getTracks()});
           console.log("sent tracks")
         }
         else if(message.type=="PLAYLIST"){
 
-
-          //get recs from spotify api
-
-          //create collav playlist with spotify api
-
-          //add songs with spotify api
-
-          //send playlist id to server
 
           //display playlist
 
@@ -136,7 +139,7 @@ export class PairingComponent implements OnInit {
 
     },
     (err) => {
-      console.log(err)
+
     },() => {
       console.log("socket completed!")
     })

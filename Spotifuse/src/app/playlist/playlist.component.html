@@ -1,0 +1,11 @@
+
+  <mat-selection-list [multiple]="false" class="card-like">
+    <div mat-subheader>Songs</div>
+
+    <mat-list-option *ngFor="let track of tracks" (click)="newTab(track.url)">
+      <mat-icon mat-list-icon>play_arrow</mat-icon>
+      <div mat-line>{{track.name}}</div>
+      <div mat-line>{{track.artist}}</div>
+    </mat-list-option>
+
+  </mat-selection-list>

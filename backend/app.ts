@@ -57,11 +57,12 @@ wss.on('connection', (ws: WebSocket) => {
 
                 }
                 else{
-                    clients.get(data.sender).send(JSON.stringify({message: 'This pin has already been used.'}));
+                    clients.get(data.sender).send(JSON.stringify({type: 'ERROR', message: 'This pin has already been used. Please try again.'}));
                 }
 
             }else{
-                clients.get(data.sender).send(JSON.stringify({message: 'This pin does not exist.'}));
+                console.log("sending error")
+                clients.get(data.sender).send(JSON.stringify({type: 'ERROR', message: 'This pin does not exist. Please try again.'}));
             }
 
         }
@@ -139,53 +140,6 @@ app.post('/sendTracks', (request, response) => {
 })
 
 
-function createNewPlaylist(pin: number){
-    /*
-    //users tracks
-    let user1 = sessions.get(pin).user1Tracks
-    let user2 = sessions.get(pin).user2Tracks
-
-    //list of trackId strings
-    let playlist = new Set()
-
-    //list of artistIds strings
-    let commonArtists = new Set()
-
-    //list of trackIds strings
-    let commonSongs = new Set()
-
-    for(let i = 0; i < user1.length; i ++){
-
-        for(let j = 0; j<user2.length; j++){
-
-            if(user1[i].id===user2[j].id){
-
-                commonSongs.add(user1[i].id)
-
-            }
-            
-            user1[i].artists.array.forEach((artist1: Artist) => {
-                user2[j].array.forEach((artist2: Artist) => {
-                    if(artist1.id===artist2.id){
-                        commonArtists.add(artist1)
-                        commonSongs.add(user1[i].id)
-                        commonSongs.add(user2[j].id)
-                    }
-                });
-            });
-
-        }
-
-    }
-
-
-
-
-
-*/
-
-
-}
 
 
 

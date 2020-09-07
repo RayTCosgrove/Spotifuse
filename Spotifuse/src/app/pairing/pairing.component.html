@@ -3,7 +3,7 @@
     <mat-grid-tile [colspan]="5"></mat-grid-tile>
     <mat-grid-tile [colspan]="3">
 
-      <div class="card-like">
+      <div *ngIf="!isPaired" class="card-like">
 
         <div *ngIf="!newPin && !existingPin">
           <p class="mat-title">
@@ -47,14 +47,20 @@
 
             <mat-form-field appearance="outline">
               <mat-label>Enter pin here!</mat-label>
-              <input matInput [(ngModel)]="pinInput" placeholder="Ex. 0000" type="number" min="0" max="9999">
+              <input matInput [(ngModel)]="pinInput" placeholder="Ex. 123456" type="number" min="0" max="9999">
               <mat-icon matSuffix>vpn_key</mat-icon>
             </mat-form-field>
+
+            <p *ngIf="errorMessage" class="error">
+              {{errorMessage}}
+            </p>
 
           <p>
             <button mat-flat-button color="accent" (click)="existingPin=false">Back!</button>
             <button mat-flat-button color="accent" (click)="useExistingPin()">Pair!</button>
           </p>
+
+
 
         </div>
 
@@ -62,6 +68,17 @@
       </div>
 
 
+      <div *ngIf="isPaired" class="card-like">
+        <p class="mat-title">
+        Paired Successfully!
+      </p>
+      <p>
+        Please click the next button below to see your playlist.
+      </p>
+      <p>
+      <button mat-flat-button color="accent" matStepperNext> Next! </button>
+      </p>
+      </div>
 
 
 

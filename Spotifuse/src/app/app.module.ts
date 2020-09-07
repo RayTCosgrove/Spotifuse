@@ -17,13 +17,16 @@ import {SpotifyAuthService} from './spotify-auth/spotify-auth.service';
 import { PairingComponent } from './pairing/pairing.component'
 import { PairingService } from './pairing/pairing.service'
 import {MatIconModule} from '@angular/material/icon';
+import { PlaylistComponent } from './playlist/playlist.component';
+import {MatListModule} from '@angular/material/list';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     SpotifyAuthComponent,
-    PairingComponent
+    PairingComponent,
+    PlaylistComponent
   ],
   imports: [
     BrowserModule,
@@ -38,8 +41,8 @@ import {MatIconModule} from '@angular/material/icon';
     MatCardModule,
     MatGridListModule,
     HttpClientModule,
-    MatIconModule
-
+    MatIconModule,
+    MatListModule
   ],
   providers: [SpotifyAuthService, PairingService],
   bootstrap: [AppComponent]

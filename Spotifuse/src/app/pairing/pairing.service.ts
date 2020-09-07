@@ -5,6 +5,8 @@ import { SpotifyAuthService } from '../spotify-auth/spotify-auth.service';
 import { Pin } from './pin'
 import { WebSocketSubject } from 'rxjs/webSocket';
 import { Message } from './Message';
+import { BehaviorSubject } from 'rxjs';
+
 
 
 @Injectable({
@@ -13,7 +15,7 @@ import { Message } from './Message';
 export class PairingService {
 
   private socket$: WebSocketSubject<Message>;
-
+  private paired = new BehaviorSubject<boolean>(false);
 
   constructor(private http: HttpClient, private auth: SpotifyAuthService) { }
 
@@ -25,6 +27,14 @@ export class PairingService {
     return this.socket$;
 
 
+  }
+
+  setPaired(isPaired: boolean){
+    this.paired.next(isPaired);
+  }
+
+  isPaired(){
+    return this.paired;
   }
 
   useExistingPin(pin: number){
