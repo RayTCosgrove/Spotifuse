@@ -7,6 +7,10 @@ var WebSocket = require("ws");
 var Message_1 = require("..//Spotifuse/src/app/pairing/Message");
 //import {Artist} from './Spotifuse/src/app/pairing/Artist'
 var app = express();
+// Create link to Angular build directory
+var distDir = __dirname + "/dist/";
+app.use(express.static(distDir));
+
 var server = http.createServer(app);
 var wss = new WebSocket.Server({ server: server });
 //current sessions
