@@ -22,7 +22,7 @@ export class PairingService {
 
   generateNewPin(){
 
-    this.socket$ = new WebSocketSubject('ws://localhost:3000');
+    this.socket$ = new WebSocketSubject('ws://spotifuse.herokuapp.com/');
 
     return this.socket$;
 
@@ -39,18 +39,13 @@ export class PairingService {
 
   useExistingPin(pin: number){
 
-    this.socket$ = new WebSocketSubject('ws://localhost:3000/?pin='+pin);
+    this.socket$ = new WebSocketSubject('ws://spotifuse.herokuapp.com/?pin='+pin);
 
     return this.socket$;
 
 
   }
 
-
-
-  sendTracks(pin: number, tracks: any){
-    return this.http.post('http://localhost:3000/sendTracks',{pin,tracks})
-  }
 
 
 

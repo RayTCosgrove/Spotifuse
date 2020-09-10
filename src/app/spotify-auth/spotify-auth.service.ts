@@ -19,7 +19,7 @@ export class SpotifyAuthService {
 
   public getAccessToken() {
     const my_client_id = '773438fd2f64447995227e8cf9a7c1a5';
-    const redirect_uri = 'http://localhost:4200';
+    const redirect_uri = 'https://spotifuse.herokuapp.com/';
 
     var scopes = 'user-read-private user-read-email user-top-read playlist-modify-public playlist-modify-private';
     var state = 'authing';
