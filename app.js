@@ -7,6 +7,10 @@ var WebSocket = require("ws");
 var app = express();
 var server = http.createServer(app);
 var wss = new WebSocket.Server({ server: server });
+
+var distDir = __dirname + "/dist/";
+app.use(express.static(distDir));
+
 //current sessions
 var sessions = new Map();
 var clients = new Map();
