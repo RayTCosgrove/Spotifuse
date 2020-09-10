@@ -74,4 +74,4 @@ wss.on('connection', function (ws) {
 //enable cors
 app.use(cors());
 app.use(express.json());
-server.listen(3000, function () { return console.log("Listening on port 3000"); });
+server.listen(process.env.PORT || 3000, function () { return console.log("Listening on port 3000"); });
