@@ -4,13 +4,7 @@ var cors = require("cors");
 var express = require("express");
 var http = require("http");
 var WebSocket = require("ws");
-var Message_1 = require("..//Spotifuse/src/app/pairing/Message");
-//import {Artist} from './Spotifuse/src/app/pairing/Artist'
 var app = express();
-// Create link to Angular build directory
-var distDir = __dirname + "/dist/";
-app.use(express.static(distDir));
-
 var server = http.createServer(app);
 var wss = new WebSocket.Server({ server: server });
 //current sessions
@@ -80,23 +74,4 @@ wss.on('connection', function (ws) {
 //enable cors
 app.use(cors());
 app.use(express.json());
-app.post('/existingPin', function (request, response) {
-    if (sessions.has(request.body.pin) && sessions.get(request.body.pin).user2Tracks == undefined) {
-        //tell client that pin exists and isnt used, should trigger an add tracks post
-        response.status(200).send({ paired: true });
-    }
-    else {
-        response.status(200).send({ paired: false });
-    }
-});
-app.post('/sendTracks', function (request, response) {
-    if (sessions.has(request.body.pin) && sessions.get(request.body.pin).user2Tracks == undefined) {
-        sessions.get(request.body.pin).websocket.send(JSON.stringify(new Message_1.Message("server", request.body.pin, true)));
-        sessions.get(request.body.pin).user2Tracks = request.body.tracks;
-        response.status(200).send({ added: true });
-    }
-    else {
-        response.status(200).send({ added: false });
-    }
-});
 server.listen(3000, function () { return console.log("Listening on port 3000"); });
