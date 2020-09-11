@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { PairingService } from './pairing.service'
 import { SpotifyAuthService } from '../spotify-auth/spotify-auth.service';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+
 
 
 
@@ -20,7 +22,7 @@ export class PairingComponent implements OnInit {
   private socket;
   public errorMessage = "";
 
-  constructor(private pairing: PairingService, private auth: SpotifyAuthService) { }
+  constructor(private pairing: PairingService, private auth: SpotifyAuthService, private http: HttpClient) { }
 
   ngOnInit(): void {
   }
@@ -76,8 +78,24 @@ export class PairingComponent implements OnInit {
 
 
           //create collab playlist
-          this.auth.createPlaylist(<string[]>Array.from(refinedTracks), this.socket, this.pin);
-          this.socket.next({type: "PLAYLIST", playlist: "6QS2MdA8lq84W7TRxT9XjM", pin: this.pin});
+          this.auth.createPlaylist(<string[]>Array.from(refinedTracks), this.socket, this.pin).subscribe((response) =>
+          {
+
+
+
+            this.http.post('https://api.spotify.com/v1/playlists/'+response.id+'/tracks',{'uris': tracks},{
+              headers: new HttpHeaders({ Authorization: 'Bearer ' + this.auth.getAccessTokenString() }).set('Content-Type', 'application/json'),
+            }).subscribe((snapshotId) => {
+              console.log(snapshotId)
+              this.auth.getPlaylistItems(response.id)
+              this.socket.next({type: "PLAYLIST", playlist: response.id, pin: this.pin});
+            })
+
+          })
+
+
+
+
 
 
           //get recs from spotify api

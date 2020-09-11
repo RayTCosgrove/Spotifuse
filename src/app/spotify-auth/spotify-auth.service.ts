@@ -62,6 +62,10 @@ export class SpotifyAuthService {
     this.authed.next(true);
   }
 
+  public getAccessTokenString(){
+    return this.accessToken;
+  }
+
   public getTracks(){
     return this.tracks;
   }
@@ -71,28 +75,15 @@ export class SpotifyAuthService {
   }
 
   public createPlaylist(tracks: string[], socket: WebSocketSubject<Message>, pin: number){
-    this.http.post<AuthObject>('https://api.spotify.com/v1/users/' + this.userId + '/playlists',{'name':'Spotifused Playlist', 'public': true, 'collaborative': true} ,{
+    return this.http.post<AuthObject>('https://api.spotify.com/v1/users/' + this.userId + '/playlists',{'name':'Spotifused Playlist', 'public': false, 'collaborative': true} ,{
       headers: new HttpHeaders({ Authorization: 'Bearer ' + this.accessToken }).set('Content-Type', 'application/json'),
-    }).subscribe((response) =>
-    {
-      console.log(response)
-      this.playlistId = response.id
-
-      this.http.post('https://api.spotify.com/v1/playlists/'+this.playlistId+'/tracks',{'uris': tracks},{
-        headers: new HttpHeaders({ Authorization: 'Bearer ' + this.accessToken }).set('Content-Type', 'application/json'),
-      }).subscribe((snapshotId) => {
-        console.log(snapshotId)
-        this.getPlaylistItems(this.playlistId)
-        socket.next({type: 'PLAYLIST', playlist: this.playlistId, pin})
-      })
-
     })
   }
 
   public getPlaylistItems(playlist_id: string){
-    if(playlist_id==null){
-      playlist_id = this.playlistId;
-    }
+    if(playlist_id!=null){
+
+
     console.log("------------------we boutta request them")
     this.http.get<AuthObject>( 'https://api.spotify.com/v1/playlists/' +playlist_id+ '/tracks',{
       headers: new HttpHeaders({ Authorization: 'Bearer ' + this.accessToken }),
@@ -107,7 +98,7 @@ export class SpotifyAuthService {
         tracks.push({name: items[i].track.name, artist: items[i].track.artists[0].name, url: items[i].track.external_urls.spotify})
       }
       this.playlistItems.next(tracks)
-    })
+    })}
     return this.playlistItems;
   }
 
