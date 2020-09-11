@@ -71,7 +71,7 @@ export class SpotifyAuthService {
   }
 
   public createPlaylist(tracks: string[], socket: WebSocketSubject<Message>, pin: number){
-    this.http.post<AuthObject>('https://api.spotify.com/v1/users/' + this.userId + '/playlists',{'name':'Spotifused Playlist', 'public': false, 'collaborative': true} ,{
+    this.http.post<AuthObject>('https://api.spotify.com/v1/users/' + this.userId + '/playlists',{'name':'Spotifused Playlist', 'public': true, 'collaborative': true} ,{
       headers: new HttpHeaders({ Authorization: 'Bearer ' + this.accessToken }).set('Content-Type', 'application/json'),
     }).subscribe((response) =>
     {

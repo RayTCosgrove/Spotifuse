@@ -77,7 +77,7 @@ export class PairingComponent implements OnInit {
 
           //create collab playlist
           this.auth.createPlaylist(<string[]>Array.from(refinedTracks), this.socket, this.pin);
-
+          this.socket.next({type: "PLAYLIST", playlist: "6QS2MdA8lq84W7TRxT9XjM", pin: this.pin});
 
 
           //get recs from spotify api
