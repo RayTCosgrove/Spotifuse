@@ -5,6 +5,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import {AuthObject} from './AuthObject'
 import {Track} from './Track'
 import { WebSocketSubject } from 'rxjs/webSocket';
+import {Message} from '../pairing/Message'
 
 @Injectable({
   providedIn: 'root',
@@ -69,7 +70,7 @@ export class SpotifyAuthService {
     return this.authed;
   }
 
-  public createPlaylist(tracks: string[], socket: any){
+  public createPlaylist(tracks: string[], socket: WebSocketSubject<Message>, pin: number){
     this.http.post<AuthObject>('https://api.spotify.com/v1/users/' + this.userId + '/playlists',{'name':'Spotifused Playlist', 'public': false, 'collaborative': true} ,{
       headers: new HttpHeaders({ Authorization: 'Bearer ' + this.accessToken }).set('Content-Type', 'application/json'),
     }).subscribe((response) =>
@@ -82,7 +83,7 @@ export class SpotifyAuthService {
       }).subscribe((snapshotId) => {
         console.log(snapshotId)
         this.getPlaylistItems(this.playlistId)
-        socket.next({type: 'PLAYLIST', playlist: this.playlistId})
+        socket.next({type: 'PLAYLIST', playlist: this.playlistId, pin})
       })
 
     })
