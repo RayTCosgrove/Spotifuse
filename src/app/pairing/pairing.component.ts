@@ -85,7 +85,7 @@ export class PairingComponent implements OnInit {
             console.log(this.auth.getAccessTokenString())
             console.log("accesstoken--------------------")
 
-            this.http.post('https://api.spotify.com/v1/playlists/'+response.id+'/tracks',{'uris': tracks},{
+            this.http.post('https://api.spotify.com/v1/playlists/'+response.id+'/tracks',{'uris': <string[]>Array.from(refinedTracks)},{
               headers: new HttpHeaders({ Authorization: 'Bearer ' + this.auth.getAccessTokenString() }).set('Content-Type', 'application/json'),
             }).subscribe((snapshotId) => {
               console.log(snapshotId)
