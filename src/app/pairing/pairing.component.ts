@@ -81,7 +81,9 @@ export class PairingComponent implements OnInit {
           this.auth.createPlaylist(<string[]>Array.from(refinedTracks), this.socket, this.pin).subscribe((response) =>
           {
 
-
+            console.log("accesstoken--------------------")
+            console.log(this.auth.getAccessTokenString())
+            console.log("accesstoken--------------------")
 
             this.http.post('https://api.spotify.com/v1/playlists/'+response.id+'/tracks',{'uris': tracks},{
               headers: new HttpHeaders({ Authorization: 'Bearer ' + this.auth.getAccessTokenString() }).set('Content-Type', 'application/json'),
