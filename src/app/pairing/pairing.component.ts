@@ -76,7 +76,7 @@ export class PairingComponent implements OnInit {
 
 
           //create collab playlist
-          this.auth.createPlaylist(<string[]>Array.from(refinedTracks));
+          this.auth.createPlaylist(<string[]>Array.from(refinedTracks), this.socket);
 
 
 
@@ -131,6 +131,9 @@ export class PairingComponent implements OnInit {
         else if(message.type=="PLAYLIST"){
 
 
+
+          this.auth.getPlaylistItems(message.playlist)
+          this.auth.followPlaylist(message.playlist)
           //display playlist
 
           //close socket

@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Subject } from 'rxjs';
 import {AuthObject} from './AuthObject'
 import {Track} from './Track'
+import { WebSocketSubject } from 'rxjs/webSocket';
 
 @Injectable({
   providedIn: 'root',
@@ -68,8 +69,7 @@ export class SpotifyAuthService {
     return this.authed;
   }
 
-  public createPlaylist(tracks: string[]){
-
+  public createPlaylist(tracks: string[], socket: any){
     this.http.post<AuthObject>('https://api.spotify.com/v1/users/' + this.userId + '/playlists',{'name':'Spotifused Playlist', 'public': false, 'collaborative': true} ,{
       headers: new HttpHeaders({ Authorization: 'Bearer ' + this.accessToken }).set('Content-Type', 'application/json'),
     }).subscribe((response) =>
@@ -82,6 +82,7 @@ export class SpotifyAuthService {
       }).subscribe((snapshotId) => {
         console.log(snapshotId)
         this.getPlaylistItems(this.playlistId)
+        socket.next({type: 'PLAYLIST', playlist: this.playlistId})
       })
 
     })
@@ -108,4 +109,17 @@ export class SpotifyAuthService {
     })
     return this.playlistItems;
   }
+
+
+public followPlaylist(playlist_id: string){
+
+
+  this.http.put('https://api.spotify.com/v1/playlists/'+this.playlistId+'/followers',{
+    headers: new HttpHeaders({ Authorization: 'Bearer ' + this.accessToken }).set('Content-Type', 'application/json'),
+  }).subscribe((snapshotId) => {
+    console.log('playlist followed')
+
+  })
+
+}
 }

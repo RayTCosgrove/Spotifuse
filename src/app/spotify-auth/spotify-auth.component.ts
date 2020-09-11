@@ -10,10 +10,10 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class SpotifyAuthComponent implements OnInit {
 
-  
+
   public isAuthed = false;
   constructor(private http: HttpClient, private auth: SpotifyAuthService, private route: ActivatedRoute) {
-    
+
   }
 
   ngOnInit(): void {
@@ -25,7 +25,7 @@ export class SpotifyAuthComponent implements OnInit {
         this.isAuthed = true;
       }
 
-      
+
     });
   }
 
