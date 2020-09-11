@@ -59,7 +59,6 @@ wss.on('connection', function (ws) {
             var session = sessions.get(data.pin);
             var newTracks = data.tracks;
             //add newTracks to session
-            console.log(session);
             session.tracks = session.tracks.concat(newTracks);
             console.log("sessionlength " + session.tracks.length);
             if (session.tracks.length >= 40) {
@@ -68,7 +67,7 @@ wss.on('connection', function (ws) {
             }
         }
         else if (data.type == "PLAYLIST") {
-            console.log("PLAYLIST");
+            console.log("PLAYLIST was recueved we are sending to new user");
             sessions.get(data.pin).user2.send(JSON.stringify({ type: 'PLAYLIST', playlist: data.playlist, pin: pin }));
         }
         ws.send(JSON.stringify({ message: "hello you sent: " + message }));

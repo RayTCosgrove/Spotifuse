@@ -13,6 +13,8 @@ export class PlaylistComponent implements OnInit {
   constructor(private auth: SpotifyAuthService) {
     console.log("requestion playlist items")
     this.auth.getPlaylistItems(null).subscribe((items) =>{
+      console.log("got a tracks update")
+      console.log(items)
       this.tracks = items;
     })
    }

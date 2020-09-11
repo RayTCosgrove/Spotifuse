@@ -131,7 +131,7 @@ export class PairingComponent implements OnInit {
         else if(message.type=="PLAYLIST"){
 
 
-
+          console.log("we got the playlist message from server")
           this.auth.getPlaylistItems(message.playlist)
           this.auth.followPlaylist(message.playlist)
           //display playlist
