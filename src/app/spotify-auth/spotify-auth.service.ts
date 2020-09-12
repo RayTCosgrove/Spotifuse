@@ -106,7 +106,7 @@ export class SpotifyAuthService {
 public followPlaylist(playlist_id: string){
 
 
-  this.http.put('https://api.spotify.com/v1/playlists/'+this.playlistId+'/followers',{
+  this.http.put('https://api.spotify.com/v1/playlists/'+playlist_id+'/followers',{
     headers: new HttpHeaders({ Authorization: 'Bearer ' + this.accessToken }).set('Content-Type', 'application/json'),
   }).subscribe((snapshotId) => {
     console.log('playlist followed')
