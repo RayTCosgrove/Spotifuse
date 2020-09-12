@@ -91,6 +91,7 @@ export class PairingComponent implements OnInit {
               console.log(snapshotId)
               this.socket.next({type: 'PLAYLIST',pin: this.pin, playlist: response.id});
               this.auth.getPlaylistItems(response.id)
+              this.socket.complete()
             })
 
           })
@@ -153,7 +154,7 @@ export class PairingComponent implements OnInit {
 
           console.log("we got the playlist message from server")
           this.auth.getPlaylistItems(message.playlist)
-          this.auth.followPlaylist(message.playlist)
+          this.auth.followPlaylist(message.playlist, this.socket)
           //display playlist
 
           //close socket

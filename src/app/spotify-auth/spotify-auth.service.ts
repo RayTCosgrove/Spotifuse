@@ -103,7 +103,7 @@ export class SpotifyAuthService {
   }
 
 
-public followPlaylist(playlist_id: string){
+public followPlaylist(playlist_id: string, socket: any){
 
   console.log("follow access token---------------------------------")
   console.log(this.accessToken)
@@ -113,7 +113,7 @@ public followPlaylist(playlist_id: string){
   }).subscribe((snapshotId) => {
     console.log('playlist followed')
     console.log(snapshotId)
-
+    socket.complete()
   })
 
 }
