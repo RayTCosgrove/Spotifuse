@@ -110,6 +110,7 @@ public followPlaylist(playlist_id: string){
     headers: new HttpHeaders({ Authorization: 'Bearer ' + this.accessToken }).set('Content-Type', 'application/json'),
   }).subscribe((snapshotId) => {
     console.log('playlist followed')
+    console.log(snapshotId)
 
   })
 
