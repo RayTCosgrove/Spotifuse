@@ -89,7 +89,7 @@ export class PairingComponent implements OnInit {
               headers: new HttpHeaders({ Authorization: 'Bearer ' + this.auth.getAccessTokenString() }).set('Content-Type', 'application/json'),
             }).subscribe((snapshotId) => {
               console.log(snapshotId)
-              this.auth.getPlaylistItems(response.id)
+
               this.socket.next({type: "PLAYLIST", playlist: response.id, pin: this.pin});
             })
 
